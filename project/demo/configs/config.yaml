@@ -1,0 +1,11 @@
+Server:
+  Post: 8080
+DataSource:
+  Driver: mysql
+  UserName: root
+  Password: admin
+  Schema: blog
+  Host: 127.0.0.1:3306
+  CharSet: utf8
+  ParseTime: true
+  Loc: local
