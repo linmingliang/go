@@ -7,7 +7,7 @@ CREATE TABLE `blog_article`
     `id`          int          NOT NULL AUTO_INCREMENT,
     `title`       varchar(64)  NOT NULL COMMENT '文章标题',
     `desc`        varchar(256) NOT NULL COMMENT '文章概述',
-    `category_id` int          NOT NULL COMMENT '文章分类',
+    `label_id` int          NOT NULL COMMENT '文章分类',
     `context`     text         NOT NULL COMMENT '文章内容',
     `state`       tinyint      NOT NULL DEFAULT '0' COMMENT '状态0：正常1：禁用2：删除',
     `createTime`  int          NOT NULL DEFAULT '0' COMMENT '创建时间',
@@ -31,7 +31,7 @@ CREATE TABLE `blog_label`
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='文章类目表';
 
 drop table if exists `blog_article_label`;
-CREATE TABLE `blog_article_lable`
+CREATE TABLE `blog_article_label`
 (
     `id`         int NOT NULL AUTO_INCREMENT,
     `article_id` int NOT NULL COMMENT '文章id',
