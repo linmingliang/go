@@ -1,11 +1,17 @@
 Server:
   Post: 8080
+  ReadTimeout: 60
+  WriteTimeout: 60
+  MaxHeaderBytes: 60
+  RunMode: debug
 DataSource:
   Driver: mysql
   UserName: root
   Password: admin
   Schema: blog
-  Host: 127.0.0.1:3306
+  Addr: 127.0.0.1:3306
   CharSet: utf8
   ParseTime: true
   Loc: local
+  MaxIdleConns: 10
+  MaxOpenConns: 30

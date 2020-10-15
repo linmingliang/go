@@ -2,25 +2,30 @@ package main
 
 import (
 	"demo/global"
+	"demo/internal/model"
 	"demo/internal/routers"
 	"demo/pkg/config"
 	"net/http"
+	"time"
 )
 
 func init() {
 	err := setupConfig()
 	if err != nil {
 		//TODO 打印错误日志
-
+	}
+	err = setupDataSource()
+	if err != nil {
+		//TODO 打印错误日志
 	}
 }
 func main() {
 	server := http.Server{
-		Addr:           "127.0.0.1:8080",
+		Addr:           "127.0.0.1" + global.ServerConfig.Get("Port").(string),
 		Handler:        routers.NewRouter(),
-		ReadTimeout:    60,
-		WriteTimeout:   60,
-		MaxHeaderBytes: 1 << 20,
+		ReadTimeout:    global.ServerConfig.Get("ReadTimeout").(time.Duration) * time.Second,
+		WriteTimeout:   global.ServerConfig.Get("WriteTimeout").(time.Duration) * time.Second,
+		MaxHeaderBytes: global.ServerConfig.Get("MaxHeaderBytes").(int),
 	}
 	err := server.ListenAndServe()
 	if err != nil {
@@ -36,7 +41,19 @@ func setupConfig() error {
 		Name: "config",
 		Path: "configs/",
 	}
-	global.Config, err = config.ReadConfig(&configInfo)
+	global.ConfigSetting, err = config.ReadConfig(&configInfo)
+	if err != nil {
+		return err
+	}
+	global.ServerConfig = global.ConfigSetting.Get("Server").(config.Configure)
+	global.AppConfig = global.ConfigSetting.Get("App").(config.Configure)
+	global.DataBaseConfig = global.DataBaseConfig.Get("DataBase").(config.Configure)
+	return nil
+}
+
+func setupDataSource() error {
+	var err error
+	global.DBEngine, err = model.NewDB(global.DataBaseConfig, global.ServerConfig.Get("RunMode").(string))
 	if err != nil {
 		return err
 	}
