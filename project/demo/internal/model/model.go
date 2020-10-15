@@ -3,20 +3,21 @@ package model
 import (
 	"demo/pkg/config"
 	"fmt"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 )
 
 func NewDB(dataSource config.Configure, runMode string) (*gorm.DB, error) {
-	driver := dataSource.Get("Driver").(string)
-	username := dataSource.Get("Username").(string)
-	password := dataSource.Get("Password").(string)
-	schema := dataSource.Get("Schema").(string)
-	addr := dataSource.Get("Addr").(string)
-	charset := dataSource.Get("Charset").(string)
-	parseTime := dataSource.Get("ParseTime").(bool)
-	loc := dataSource.Get("Loc").(string)
-	maxIdleConns := dataSource.Get("MaxIdleConns").(int)
-	maxOpenConns := dataSource.Get("MaxOpenConns").(int)
+	driver := dataSource.Get("driver").(string)
+	username := dataSource.Get("username").(string)
+	password := dataSource.Get("password").(string)
+	schema := dataSource.Get("schema").(string)
+	addr := dataSource.Get("addr").(string)
+	charset := dataSource.Get("charset").(string)
+	parseTime := dataSource.Get("parsetime").(bool)
+	loc := dataSource.Get("loc").(string)
+	maxIdleConns := dataSource.Get("maxidleconns").(int)
+	maxOpenConns := dataSource.Get("maxopenconns").(int)
 	conn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=%s&parseTime=%t&Loc=%s",
 		username, password, addr, schema, charset, parseTime, loc)
 	db, err := gorm.Open(driver, conn)

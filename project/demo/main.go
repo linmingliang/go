@@ -5,6 +5,7 @@ import (
 	"demo/internal/model"
 	"demo/internal/routers"
 	"demo/pkg/config"
+	"fmt"
 	"net/http"
 	"time"
 )
@@ -21,11 +22,11 @@ func init() {
 }
 func main() {
 	server := http.Server{
-		Addr:           "127.0.0.1" + global.ServerConfig.Get("Port").(string),
+		Addr:           fmt.Sprintf("%s:%d", "127.0.0.1", global.ServerConfig.Get("port").(int)),
 		Handler:        routers.NewRouter(),
-		ReadTimeout:    global.ServerConfig.Get("ReadTimeout").(time.Duration) * time.Second,
-		WriteTimeout:   global.ServerConfig.Get("WriteTimeout").(time.Duration) * time.Second,
-		MaxHeaderBytes: global.ServerConfig.Get("MaxHeaderBytes").(int),
+		ReadTimeout:    time.Duration(global.ServerConfig.Get("readtimeout").(int)) * time.Second,
+		WriteTimeout:   time.Duration(global.ServerConfig.Get("writetimeout").(int)) * time.Second,
+		MaxHeaderBytes: global.ServerConfig.Get("maxheaderbytes").(int),
 	}
 	err := server.ListenAndServe()
 	if err != nil {
@@ -45,15 +46,14 @@ func setupConfig() error {
 	if err != nil {
 		return err
 	}
-	global.ServerConfig = global.ConfigSetting.Get("Server").(config.Configure)
-	global.AppConfig = global.ConfigSetting.Get("App").(config.Configure)
-	global.DataBaseConfig = global.DataBaseConfig.Get("DataBase").(config.Configure)
+	global.ServerConfig = global.ConfigSetting.Get("server").(config.Configure)
+	global.DataBaseConfig = global.ConfigSetting.Get("datasource").(config.Configure)
 	return nil
 }
 
 func setupDataSource() error {
 	var err error
-	global.DBEngine, err = model.NewDB(global.DataBaseConfig, global.ServerConfig.Get("RunMode").(string))
+	global.DBEngine, err = model.NewDB(global.DataBaseConfig, global.ServerConfig.Get("runmode").(string))
 	if err != nil {
 		return err
 	}

@@ -15,9 +15,14 @@ type Configure map[string]interface{}
 func (c Configure) Get(key string) interface{} {
 	value := c[key]
 	switch value.(type) {
-	case Configure:
-		v := value.(Configure)
-		return v
+	case map[string]interface{}:
+		return Configure(value.(map[string]interface{}))
+	case bool:
+		return value.(bool)
+	case int:
+		return value.(int)
+	case string:
+		return value.(string)
 	default:
 		return value
 	}
