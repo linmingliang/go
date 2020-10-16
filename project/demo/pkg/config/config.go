@@ -12,7 +12,26 @@ type Info struct {
 
 type Configure map[string]interface{}
 
-func (c Configure) Get(key string) interface{} {
+func (c Configure) Get(key string) (interface{}, bool) {
+	value, ok := c[key]
+	if ok {
+		switch value.(type) {
+		case map[string]interface{}:
+			return Configure(value.(map[string]interface{})), true
+		case bool:
+			return value.(bool), true
+		case int:
+			return value.(int), true
+		case string:
+			return value.(string), true
+		default:
+			return value, true
+		}
+	}
+	return nil, ok
+}
+
+func (c Configure) MustGet(key string) interface{} {
 	value := c[key]
 	switch value.(type) {
 	case map[string]interface{}:

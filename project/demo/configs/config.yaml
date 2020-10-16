@@ -3,12 +3,16 @@ server:
   readtimeout: 60
   writetimeout: 60
   maxHeaderBytes: 60
-  runmode: debug
+  runmode: release
+  logger:
+    level: debug
+    path:  storage/logger
+    file:  blog.logger
 datasource:
   driver: mysql
   userName: root
   password: admin
-  schema: blog
+  schema: blog.text
   addr: 127.0.0.1:3306
   charSet: utf8
   parseTime: true

@@ -1,13 +1,14 @@
 package routers
 
 import (
+	"demo/internal/middleware"
 	v1 "demo/internal/routers/api/v1"
 	"github.com/gin-gonic/gin"
 )
 
 func NewRouter() *gin.Engine {
 	engine := gin.New()
-	engine.Use(gin.Logger(), gin.Recovery())
+	engine.Use(gin.Recovery(), middleware.BeforeRequest())
 
 	r := engine.Group("/api/v1")
 	{
