@@ -1,7 +1,6 @@
 package v1
 
 import (
-	"demo/pkg/logger"
 	"fmt"
 	"github.com/gin-gonic/gin"
 )
@@ -14,7 +13,8 @@ func NewBlogArticle() *BlogArticle {
 }
 
 func (blogArticle *BlogArticle) ArticleList(c *gin.Context) {
-	logger.InfoF("%s", "ddd")
+	//resp.Success(c,"sdfsdf")
+	//resp.Error(c,err.NewError(500,"服务器错误"))
 }
 
 func (blogArticle *BlogArticle) ArticleInfo(c *gin.Context) {

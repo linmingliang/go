@@ -26,7 +26,7 @@ func BeforeRequest() gin.HandlerFunc {
 		if raw != "" {
 			path = path + "?" + raw
 		}
-
+		//TODO 请求参数
 		s := fmt.Sprintf("[%9s]| %3v | %s | %s | %13v |%d \n",
 			"GIN",
 			startTime.Format("2006/01/02 - 15:04:05"),
